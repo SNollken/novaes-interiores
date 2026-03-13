@@ -856,7 +856,7 @@ p.section-subtitle {
     color: #1F2937;
     text-decoration: none;
 }
-#btnzap::hover{
+#btnzap:hover{
     background-position: right;
     color: #111827;
 }
