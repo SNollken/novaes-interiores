@@ -71,6 +71,7 @@ body {
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    position: relative;
 }
 
 #header .logo {
@@ -100,6 +101,48 @@ body {
 
 #header nav a:hover {
     color: var(--primary);
+}
+
+#header .menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--foreground);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#header .menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#header .menu-toggle:hover,
+#header .menu-toggle:focus-visible {
+    background-color: hsla(220, 10%, 90%, 0.6);
+    border-color: var(--border);
+}
+
+#header .menu-toggle.is-open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+#header .menu-toggle.is-open span:nth-child(2) {
+    opacity: 0;
+}
+
+#header .menu-toggle.is-open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 main {
@@ -710,17 +753,28 @@ p.section-subtitle {
     /* Styles for smaller than md */
     #header nav {
         display: none;
-        /* Or style as a mobile menu if implemented */
-        /* For simplicity, hiding. To make it wrap:
         position: absolute;
-        top: 4rem;
+        top: 100%;
         left: 0;
         right: 0;
-        background-color: var(--background);
+        background-color: hsla(0, 0%, 100%, 0.98);
         flex-direction: column;
         padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        */
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid var(--border);
+    }
+
+    #header nav.is-open {
+        display: flex;
+    }
+
+    #header nav a {
+        margin: 0;
+        padding: 0.75rem 0.5rem;
+    }
+
+    #header .menu-toggle {
+        display: inline-flex;
     }
 
     #header .logo span {
