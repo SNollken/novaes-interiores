@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div class="card-image">
-                    <img src="${project.imageUrl}" alt="${project.title}" data-ai-hint="${project.imageHint}">
+                    <img src="${project.imageUrl}" alt="${project.title}" data-ai-hint="${project.imageHint}" loading="lazy" decoding="async">
                 </div>
                 <div class="card-content">
                     <h3>${project.title}</h3>
