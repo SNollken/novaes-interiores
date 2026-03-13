@@ -816,12 +816,12 @@ p.section-subtitle {
 
 #meu-link {
     color: #1F2937; /* Cor inicial do texto */
-    text-decoration: none;
     display: inline-block;
     transition: transform 0.3s ease, background 0.4s ease, color 0.4s ease;
 }
 
-#meu-link:hover {
+#btnzap:hover #meu-link,
+#btnzap:focus-visible #meu-link {
     background-image: linear-gradient(
         90deg,
         red,
@@ -854,6 +854,7 @@ p.section-subtitle {
     background: linear-gradient(90deg, #A3E635, #14B8A6);
     border: 2px solid #10B981;
     color: #1F2937;
+    text-decoration: none;
 }
 #btnzap::hover{
     background-position: right;
