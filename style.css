@@ -208,6 +208,8 @@ p.section-subtitle {
     align-items: center;
     justify-content: center;
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .bg-slide {
@@ -818,6 +820,23 @@ p.section-subtitle {
     color: #1F2937; /* Cor inicial do texto */
     display: inline-block;
     transition: transform 0.3s ease, background 0.4s ease, color 0.4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .scroll-animate,
+    .card-scroll-animate {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 #btnzap:hover #meu-link,

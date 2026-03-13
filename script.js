@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const slides = [
         'images/banheiro1.jpeg',
         'images/banheiro2.jpeg',
@@ -21,23 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
       slide1.style.backgroundImage = `url('${slides[0]}')`;
       slide1.classList.add('active');
     
-      setInterval(() => {
-        // próxima imagem
-        current = (current + 1) % slides.length;
-        const nextUrl = `url('${slides[current]}')`;
-    
-        if (showingFirst) {
-          // prepara slide2 e fade in
-          slide2.style.backgroundImage = nextUrl;
-          slide2.classList.add('active');
-          slide1.classList.remove('active');
-        } else {
-          slide1.style.backgroundImage = nextUrl;
-          slide1.classList.add('active');
-          slide2.classList.remove('active');
-        }
-        showingFirst = !showingFirst;
-      }, 3000);
+      if (!reduceMotion) {
+        setInterval(() => {
+          // próxima imagem
+          current = (current + 1) % slides.length;
+          const nextUrl = `url('${slides[current]}')`;
+      
+          if (showingFirst) {
+            // prepara slide2 e fade in
+            slide2.style.backgroundImage = nextUrl;
+            slide2.classList.add('active');
+            slide1.classList.remove('active');
+          } else {
+            slide1.style.backgroundImage = nextUrl;
+            slide1.classList.add('active');
+            slide2.classList.remove('active');
+          }
+          showingFirst = !showingFirst;
+        }, 3000);
+      }
 
     // Mobile menu toggle
     const menuToggle = document.querySelector('#header .menu-toggle');
@@ -87,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 window.scrollTo({
                     top: offsetPosition,
-                    behavior: 'smooth'
+                    behavior: reduceMotion ? 'auto' : 'smooth'
                 });
             }
         });
@@ -144,32 +148,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll Animations
     const animatedElements = document.querySelectorAll('.scroll-animate, .card-scroll-animate');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.dataset.delay;
-                if (delay) {
-                    entry.target.style.transitionDelay = delay;
-                }
-                if (entry.target.classList.contains('card-scroll-animate')) {
-                    entry.target.classList.add('card-scroll-animate-visible');
-                } else {
-                    entry.target.classList.add('scroll-animate-visible');
-                }
-                observer.unobserve(entry.target); // Trigger once
+    if (reduceMotion) {
+        animatedElements.forEach(el => {
+            if (el.classList.contains('card-scroll-animate')) {
+                el.classList.add('card-scroll-animate-visible');
+            } else {
+                el.classList.add('scroll-animate-visible');
             }
         });
-    }, { threshold: 0.1 });
+    } else {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.dataset.delay;
+                    if (delay) {
+                        entry.target.style.transitionDelay = delay;
+                    }
+                    if (entry.target.classList.contains('card-scroll-animate')) {
+                        entry.target.classList.add('card-scroll-animate-visible');
+                    } else {
+                        entry.target.classList.add('scroll-animate-visible');
+                    }
+                    observer.unobserve(entry.target); // Trigger once
+                }
+            });
+        }, { threshold: 0.1 });
 
-    animatedElements.forEach(el => {
-        // Set initial delay for card animations if specified in HTML data attribute
-        if (el.classList.contains('card-scroll-animate') && el.dataset.delay) {
-            el.style.setProperty('--card-delay', el.dataset.delay);
-        } else if (el.classList.contains('scroll-animate') && el.dataset.delay) {
-            el.style.setProperty('--scroll-delay', el.dataset.delay);
-        }
-        observer.observe(el);
-    });
+        animatedElements.forEach(el => {
+            // Set initial delay for card animations if specified in HTML data attribute
+            if (el.classList.contains('card-scroll-animate') && el.dataset.delay) {
+                el.style.setProperty('--card-delay', el.dataset.delay);
+            } else if (el.classList.contains('scroll-animate') && el.dataset.delay) {
+                el.style.setProperty('--scroll-delay', el.dataset.delay);
+            }
+            observer.observe(el);
+        });
+    }
 
 
     // Set current year in footer
